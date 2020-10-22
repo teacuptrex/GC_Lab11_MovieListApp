@@ -1,6 +1,8 @@
 package gcLab11;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -15,41 +17,41 @@ public class MovieListApp {
 		
 		System.out.println("Welcome to the Movie List Application!");
 		
-		new Movie("Dune","scifi");
-		new Movie("Serenity","scifi");
-		new Movie("Escape 2120","scifi");
-		new Movie("IT","horror");
-		new Movie("Halloween","horror");
-		new Movie("Drama Movie 1","drama");
-		new Movie("Zootopia","animated");
-		new Movie("The Hobbit","animated");
-		new Movie("The Fox and The Hound","animated");
-		new Movie("Up","animated");
+		//add movies from MoviesIO
+		for(int j = 1; j <= 100; j++) {
+			MovieIO.getMovie(j);
+		}
 		
 		Map<String, String> movs = Movie.getAllMovies();
 		System.out.println("There are " + movs.size() + "in this list.");
 		
-		String catInput = "";
-
-		
 		do {
+			int total = 0;
+			int catInput = -1;
+			List<String> selected = new ArrayList<>();
 			
 			printCategoryMenu();
 			
 			while(Movie.validCategory(catInput) != true) {
 				System.out.println("\r\nWhat category are you interested in? ");
-				catInput = scn.nextLine().toLowerCase();
+				catInput = scn.nextInt();
+				scn.nextLine();
 			}
 			
 			for(Map.Entry<String,String> entry : movs.entrySet()) {
-				if(entry.getValue().equals(catInput)) {
-					
-					System.out.println(entry.getKey());
-					
+				if(entry.getValue().equals(Movie.getValidCategories().get(catInput-1))) {					
+					selected.add(entry.getKey());
+					total++;
 				}
 			}
 			
-			catInput = "";
+			Collections.sort(selected);
+			
+			for(String ent : selected) {
+				System.out.println(ent);	
+			}
+			
+			System.out.println("There are " + total + " movies in the " + Movie.getValidCategories().get(catInput-1) + " category.");
 			
 		} while (yesOrNo(scn,"Continue? (y/n)"));
 		
@@ -85,11 +87,14 @@ public class MovieListApp {
 	public static void printCategoryMenu() {
 		List<String> cats = Movie.getValidCategories();
 		
-		System.out.printf("%-14s\r\n","Enter Category to Select: ");
+		System.out.printf("%-14s %-10s\r\n","Category","Enter Number to Select: ");
 				
 		for(int i = 0; i < cats.size(); i++) {
-			System.out.printf("%-14s\r\n",cats.get(i));
+			System.out.printf("%-14s %-10s\r\n",cats.get(i),i+1);
 		}	
 	}
+	
+	
+
 
 }

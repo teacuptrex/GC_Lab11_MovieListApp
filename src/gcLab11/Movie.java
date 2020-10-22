@@ -58,4 +58,12 @@ public class Movie {
 		return categories;
 	}
 	
+	public static boolean validCategory(int index) {
+		if((index+1)<=categories.size() && (index+1)>0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }
